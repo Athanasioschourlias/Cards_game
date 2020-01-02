@@ -34,7 +34,7 @@ def print_info():
     print("The deck has ", len(d.content), " cards")
     print("The computer has ", len(computer_hand), " cards")
     print("On the table are ", len(table), " cards")
-    print("Your cards are ", len(heman_hand))
+    print("Your cards are ", len(human_hand))
     HHS = [str(x) for x in human_hand]
     print(HHS)
     print()
@@ -65,7 +65,7 @@ def human_plays():
                     print('You can not through that card', sel)
                 else:
                     print("You through the",sel)
-                    ind = HSS.index(sel)
+                    ind = HHS.index(sel)
                     selc = human_hand[ind]
                     human_hand.remove(selc)
                     table.append(selc)
@@ -128,7 +128,7 @@ def next_turn():
             print("--------------------Computers turn--------------------")
             print()
             Computer_Plays()
-        elif what_heppend == "computer_played":
+        elif what_heppend == "computer_played": #!FIX THE LOCAL VARIABLE ERROR HERE
             if len(computer_hand)== 0:
                 what_happend = "computer_wins"
                 evaluate()
