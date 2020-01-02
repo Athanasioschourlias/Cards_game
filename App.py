@@ -128,7 +128,7 @@ def next_turn():
             print("--------------------Computers turn--------------------")
             print()
             Computer_Plays()
-        elif what_heppend == "computer_played": #!FIX THE LOCAL VARIABLE ERROR HERE
+        elif what_happend == "computer_played": #!FIX THE LOCAL VARIABLE ERROR HERE
             if len(computer_hand)== 0:
                 what_happend = "computer_wins"
                 evaluate()
