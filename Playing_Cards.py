@@ -59,5 +59,11 @@ class Deck():
         self.content = self.content + self.pile
         self.pile= []
     
+class Pack(Deck):
+    def __init__(self, number_of_decks = 2):
+        d = Deck()
+        self.content = d.content * number_of_decks
+        self.pile = []
+    
         
         

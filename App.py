@@ -1,12 +1,20 @@
 from Playing_Cards import *
 
+#! MAIN PROGRAM
+print('THE GAME WITH CARDS v 1.0.0')
+print("===========================")
+print()
+n = int(input("With how many deck you want to play? ")) # TODO I HAVE TO ADD A CHECK IF THE PLAYER ENTERS A NEGATIVE OR AN INVALID VALUE
+print("OK, chif we are playing with, ", n , "number of decks")
+print()
+
 #Global variables
-d = Deck()
 table= []
 computer_hand = []
 human_hand = []
 what_happend = ""
 again = "y"
+d = Pack(n)
 
 def Computer_Plays():
     global d, table, computer_hand, human_hand, what_happend
@@ -128,7 +136,7 @@ def next_turn():
             print("--------------------Computers turn--------------------")
             print()
             Computer_Plays()
-        elif what_happend == "computer_played": #!FIX THE LOCAL VARIABLE ERROR HERE
+        elif what_happend == "computer_played": 
             if len(computer_hand)== 0:
                 what_happend = "computer_wins"
                 evaluate()
@@ -142,9 +150,6 @@ def next_turn():
 
 
 #! MAIN PROGRAM
-print('THE GAME WITH CARDS v 1.0.0')
-print("===========================")
-print()
 
 while again == "y":
     what_happend = "game_starts"
