@@ -1,5 +1,6 @@
 from Playing_Cards import *
 
+
 #! MAIN PROGRAM
 print('THE GAME WITH CARDS v 1.0.0')
 print("===========================")
@@ -15,6 +16,7 @@ human_hand = []
 what_happend = ""
 again = "y"
 d = Pack(n)
+
 
 def Computer_Plays():
     global d, table, computer_hand, human_hand, what_happend
