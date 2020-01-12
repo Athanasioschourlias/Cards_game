@@ -10,13 +10,15 @@ path = "."
 class CardGameGui(tk.Frame):
     def __init__(self, root):
         ### Game parameteres
+        root.title("Cards game V2.0.0")
+        root.resizable(width='false', height='false')
         self.d = Playing_Cards.Deck()
         self.table = [] #list with the cards in the table
         self.computer_hand = [] #the cards that computer has
         self.human_hand = [] #the cards that the player has in his hand
         self.what_happend = "start" #what_happens every moment of the game
         self.generate_card_images() #list with the images of the cards of the deck from the sprite sheet
-        self.draw_cards = []
+        self.drawn_cards = []
         ###GUI parameters
         self.board_width, self.board_height = 900, 600 #Canvas dimantions
         self.card_width, self.card_height = 80, 120 #Diamentions of the cards
@@ -33,7 +35,7 @@ class CardGameGui(tk.Frame):
         self.b.pack(side='left', fill='x')
         self.message = ""
         self.score = [0,0]
-        self.score_label = tk.Label(self.f1, text = "Score : Computer{} - You{}".format(self.score[0], self.score[1]), font = 'Arial 14', fg = 'brown')
+        self.score_label = tk.Label(self.f1, text = "Score : Computer {} - You {}".format(self.score[0], self.score[1]), font = 'Arial 14', fg = 'brown')
         self.score_label.pack(side = 'right')
 
 
@@ -43,7 +45,7 @@ class CardGameGui(tk.Frame):
         self.computer_hand = [] #the cards that computer has
         self.human_hand = [] #the cards that the player has in his hand
         self.what_happend = "start" #what_happens every moment of the game
-        self.create_bord()
+        self.create_board()
 
     def subimage(self, l, t, r, b):
         dst = PhotoImage()
@@ -61,16 +63,17 @@ class CardGameGui(tk.Frame):
         for x in 'sdhc':
             self.images [x] = [self.subimage(80*i, 0+place, 80*(i+1), 120+place) for i in range(self.num_sprites)]
             place += 120
+        self.card_back = self.subimage(0,place,80,120 + place)
 
-    def create_bord(self):
+    def create_board(self):
         if self.what_happend == "start":
             self.initial()
         #the area where the cards of the computer are
         comp_startx, comp_starty = self.padx, self.pady
-        comp_endx, comp_endy - self.padx + (len(self.computer_hand)+ 1)* self.card_width //2, self.pady + self.card_height
+        comp_endx, comp_endy = self.padx + (len(self.computer_hand)+ 1)* self.card_width //2, self.pady + self.card_height
         self.comp_plays_area = (comp_startx, comp_starty, comp_endx, comp_endy)
         #the area of the cards from the player
-        human_startx, human_starty = self.padx, self.bord_height - self.pady - self.card_height
+        human_startx, human_starty = self.padx, self.board_height - self.pady - self.card_height
         human_endx, human_endy = self.padx + (len(self.human_hand)+1) * self.card_width//2, self.board_height - self.pady
         self.human_plays_area = (human_startx, human_starty, human_endx, human_endy)
         #the area of the cards from the deck
@@ -82,10 +85,10 @@ class CardGameGui(tk.Frame):
 
         #Draw cards
         self.canvas.delete('all')
-        self.draw_cards = []
+        self.drawn_cards = []
         self.score_label.config(text = "Score : Computer{} - You{}".format(self.score[0], self.score[1])) 
         if self.d.cards_left() > 0:
-            self.draw_cards.append(self.drawimage((deck_startx, deck_starty), 'bb'))
+            self.drawn_cards.append(self.drawimage((deck_startx, deck_starty), 'bb'))
             self.canvas.create_text(deck_startx, deck_starty - 45, fill = 'white', text = 'Deck: \n Cards:{}'.format(self.d.cards_left()), font = 'Arial 14', anchor = 'nw')
         else:
             self.canvas.create_text(deck_startx-40, deck_starty, fill="white", text = "The cards \nof the deck \n finished" + "\nClick here \nfor the score\nif you dont have an other card \nto throw", font="Arial 12", anchor = 'nw')
@@ -107,8 +110,8 @@ class CardGameGui(tk.Frame):
     def board_event_handler(self, event):
         x = event.x
         y = event.y
-        if self.what_happend == 'END' :
-            return
+        if self.what_happend == 'END':
+            return 
         else:
             if self.in_area(x,y, self.human_plays_area ):
                 # The user has pressed the area of his cards,
@@ -171,8 +174,7 @@ class CardGameGui(tk.Frame):
         else:
             sprite = 'A23456789TJQK'.find(c[0].upper())
             symbol = c[1].lower()
-            self.new_img = self.canvas.create_image(x,y, \
-                        image = self.images[symbol][sprite])
+            self.new_img = self.canvas.create_image(x,y, image = self.images[symbol][sprite])
             self.canvas.itemconfig (self.new_img, anchor = 'nw')
         return self.new_img
     
@@ -183,11 +185,11 @@ class CardGameGui(tk.Frame):
         self.human_hand = []
         self.d.shuffle()
         print("Collecting the cards...Shaffling the deck...I'm dealing...")
-        self.table.append(self.d.draw())
+        self.table.append(self.d.Draw())
         print("In the table is", self.table[-1]) ########################## event 5
         for i in range(7):
-            self.human_hand.append(self.d.draw())
-            self.computer_hand.append(self.d.draw())
+            self.human_hand.append(self.d.Draw())
+            self.computer_hand.append(self.d.Draw())
         if random.random()<0.5:
             print("Throwing a coin......You play first")
             self.what_happened = "computer_played"
@@ -209,7 +211,7 @@ class CardGameGui(tk.Frame):
                     self.table.append(c)
                     self.what_happened = "computer_played"
                     return
-            new_card  =  self.d.draw()
+            new_card  =  self.d.Draw()
             if new_card  == "empty":
                 self.what_happened = "deck_finished"
                 return
@@ -220,7 +222,7 @@ class CardGameGui(tk.Frame):
 
     def human_plays(self, sel):
             if sel =="":
-                new_card = self.d.draw()
+                new_card = self.d.Draw()
                 print(str(new_card))
                 if new_card =="empty":
                     if self.what_happened != 'END' :
@@ -255,14 +257,12 @@ class CardGameGui(tk.Frame):
         if self.what_happened =="human_wins":
             out = "Congratulations. YOU WON!!!"
             self.score[1] += 1
-            self.score_label.config(text= \
-                "Score : Computer {} - Player {}   ".format(self.score[0], self.score[1]))
+            self.score_label.config(text= "Score : Computer {} - Player {}   ".format(self.score[0], self.score[1]))
             self.what_happened = 'END'
         if self.what_happened =="computer_wins":
             out = "The computer beat you"
             self.score[0] += 1
-            self.score_label.config(text= \
-                "Score : computer {} - Player {}   ".format(self.score[0], self.score[1]))
+            self.score_label.config(text= "Score : computer {} - Player {}   ".format(self.score[0], self.score[1]))
             self.what_happened = 'END'
         if self.what_happened =="deck_finished":
             ch = len(self.computer_hand)
@@ -271,34 +271,31 @@ class CardGameGui(tk.Frame):
             hh = len(self.human_hand)
             if hh == 1: fyl2 = "Card"
             else: fyl2 = "Cards"
-            out = "The deck is finished, the computer has "+ \
-                  "{} {} and you have {} {}\n".format(ch, fyl1, hh, fyl2)
+            out = "The deck is finished, the computer has "+ "{} {} and you have {} {}\n".format(ch, fyl1, hh, fyl2)
             if ch>hh:
                 out += "Congratulations you won!!!"
                 self.score[1] += 1
-                self.score_label.config(text= \
-                    "Score : Computer {} - Player {}   ".format(self.score[0], self.score[1]))
+                self.score_label.config(text= "Score : Computer {} - Player {}   ".format(self.score[0], self.score[1]))
                 self.what_happened = 'END'
             if ch<hh:
                 out += "The computer won."
                 self.score[0] += 1
-                self.score_label.config(text= \
-                    "score: Computer{} - Player {}   ".format(self.score[0], self.score[1]))
+                self.score_label.config(text= "score: Computer{} - Player {}   ".format(self.score[0], self.score[1]))
                 self.what_happened = 'END'
             if ch ==hh:
-                out+="TIW ( The computer and you have the same number of cards )"
+                out+="TIE ( The computer and you have the same number of cards )"
                 self.what_happened = 'END'
         return out
 
 
 
-root = tk.Tk()
-app = CardGameGui(root)
-root.mainloop()
-# def main():
-#     root = tk.Tk()
-#     CardGameGui(root)
-#     root.mainloop()
+# root = tk.Tk()
+# app = CardGameGui(root)
+# root.mainloop()
+def main():
+    root = tk.Tk()
+    CardGameGui(root)
+    root.mainloop()
     
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

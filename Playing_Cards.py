@@ -59,6 +59,9 @@ class Deck():
         self.content = self.content + self.pile
         self.pile= []
     
+    def cards_left(self):
+        return len(self.content)
+    
 class Pack(Deck):
     def __init__(self, number_of_decks = 2):
         d = Deck()
