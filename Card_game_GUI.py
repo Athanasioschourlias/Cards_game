@@ -48,7 +48,7 @@ class CardGameGui(tk.Frame):
         self.create_board()
 
     def subimage(self, l, t, r, b):
-        dst = PhotoImage()
+        dst = tk.PhotoImage()
         dst.tk.call(dst, "copy", self.spritsheet, '-from', l, t, r, d, '-to', 0, 0)
         return dst
 
