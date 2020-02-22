@@ -117,7 +117,7 @@ class CardGameGui(tk.Frame):
                 # The user has pressed the area of his cards,
                 # Serching for the cards the player pressed on
                 w = self.card_width//2
-                x0 = x-self.human_plays_area[0]
+                x0 = x - self.human_plays_area[0]
                 card_selected = x0//w
                 if card_selected >= len(self.human_hand):
                     card_selected = len(self.human_hand) - 1
@@ -130,9 +130,9 @@ class CardGameGui(tk.Frame):
                             self.canvas.after(200, self.create_board)
                             # it returns to redraw the board in the new state
                         else:
-                        # the action can be executed but the cards of the player are not finished yet
+                            # the action can be executed but the cards of the player are not finished yet
                             self.computer_plays() # Calling the function Computer_Plays()
-                        # Checking if the cards from the computer are finished
+                            # Checking if the cards from the computer are finished
                             if len(self.computer_hand) == 0:
                                 self.what_happened = "computer_wins"
                                 self.message = self.evaluate() # Final message
@@ -143,6 +143,7 @@ class CardGameGui(tk.Frame):
                                 self.canvas.after(200, self.create_board)
                     # For any othe case redraw the Game UI
                     self.canvas.after(200, self.create_board)
+            
             elif self.in_area(x,y, self.deck_of_cards_area ):
                 # The user has presse the area of the deck
                 if self.human_plays(""): # The player is drawing a new card
@@ -152,6 +153,7 @@ class CardGameGui(tk.Frame):
                     else:
                         self.canvas.after(200, self.create_board)
                         # exit point to  create the board
+    
     def in_area(self, x,y, rect):
         if x>= rect[0] and x <= rect[2] \
             and y >= rect[1] and y <= rect[3]:
@@ -244,7 +246,7 @@ class CardGameGui(tk.Frame):
                     showinfo("Warning!!!", "You can not make that move!")
                     return 0
                 else:
-                    print("You throw the",sel) # αυτο δεν χρειαζεται να ανακοινωθει
+                    print("You throw the",sel) # No need to announce that
                     ind = human_hand_string.index(sel)
                     selc = self.human_hand[ind]
                     self.human_hand.remove(selc)
